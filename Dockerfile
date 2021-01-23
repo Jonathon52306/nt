@@ -1,6 +1,7 @@
 FROM node:14.15.4 as builder-node
 COPY ./web .
-RUN  npm install \
+RUN  npm install -g cnpm \
+    && cnpm install \
     && npm run build
 
 FROM golang:alpine as builder
