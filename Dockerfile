@@ -12,7 +12,8 @@ ENV GOPROXY=https://goproxy.io,direct
 
 WORKDIR /app
 
-COPY --from=builder-node . .
+COPY . .
+COPY --from=builder-node . ./web
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk add gcc g++ \
