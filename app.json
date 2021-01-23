@@ -1,0 +1,13 @@
+{
+    "name": "Next-terminal",
+    "description": "Deploy Next-terminal on Heroku.",
+    "keywords": ["Next-terminal"],
+    "env": {
+        "PORT": {
+            "description": "Next-terminal Port",
+            "value": "80"
+        }
+    },
+    "repository": "https://github.com/Jonathon52306/nt",
+    "stack": "container"
+}

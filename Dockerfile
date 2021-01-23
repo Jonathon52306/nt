@@ -21,9 +21,9 @@ RUN apt-get update && apt-get -y install supervisor
 RUN mkdir -p /var/log/supervisor
 COPY --from=builder /app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENV DB sqlite
+ENV DB $DB
 ENV SQLITE_FILE 'next-terminal.db'
-ENV SERVER_PORT 8088
+ENV SERVER_PORT $PORT
 ENV SERVER_ADDR 0.0.0.0:$SERVER_PORT
 ENV TIME_ZONE=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
