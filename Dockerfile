@@ -1,3 +1,9 @@
+FROM node:14.15.4 as builder-node
+COPY ./web .
+RUN cd web \
+    && npm install \
+    && npm run build
+
 FROM golang:alpine as builder
 
 ENV GO111MODULE=on
@@ -6,19 +12,19 @@ ENV GOPROXY=https://goproxy.io,direct
 
 WORKDIR /app
 
-COPY . .
+COPY --from=builder-node . .
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
-RUN apk add gcc g++
-RUN go env && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -ldflags '-linkmode external -extldflags "-static"' -o next-terminal main.go
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+    && apk add gcc g++ \
+    && go env && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -ldflags '-linkmode external -extldflags "-static"' -o next-terminal main.go
 
 FROM guacamole/guacd:1.2.0
 
 LABEL MAINTAINER="helloworld1024@foxmail.com"
 
-RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-RUN apt-get update && apt-get -y install supervisor
-RUN mkdir -p /var/log/supervisor
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
+    && apt-get update && apt-get -y install supervisor \
+    && mkdir -p /var/log/supervisor
 COPY --from=builder /app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ENV DB $DB
