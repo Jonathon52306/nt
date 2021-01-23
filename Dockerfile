@@ -30,7 +30,7 @@ COPY --from=builder /app/supervisord.conf /etc/supervisor/conf.d/supervisord.con
 
 ENV DB sqlite
 ENV SQLITE_FILE 'next-terminal.db'
-ENV SERVER_PORT $PORT
+ENV SERVER_PORT 80
 ENV SERVER_ADDR 0.0.0.0:$SERVER_PORT
 ENV TIME_ZONE=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
