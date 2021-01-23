@@ -1,7 +1,6 @@
 FROM node:14.15.4 as builder-node
 COPY ./web .
-RUN cd web \
-    && npm install \
+RUN  npm install \
     && npm run build
 
 FROM golang:alpine as builder
