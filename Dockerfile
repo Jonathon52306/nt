@@ -27,7 +27,7 @@ RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
     && mkdir -p /var/log/supervisor
 COPY --from=builder /app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENV DB $DB
+ENV DB sqlite
 ENV SQLITE_FILE 'next-terminal.db'
 ENV SERVER_PORT $PORT
 ENV SERVER_ADDR 0.0.0.0:$SERVER_PORT
